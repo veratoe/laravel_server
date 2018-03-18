@@ -12,9 +12,10 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($threadId)
     {
         //
+        return Comment::where('thread_id', $threadId)->with('Author')->get();
     }
 
     /**
@@ -33,9 +34,15 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $threadId)
     {
-        //
+
+        Comment::create([
+            'author_id' => rand(1, 100),
+            'thread_id' => $threadId,
+            'content' => $request['content']
+        ]);
+
     }
 
     /**
