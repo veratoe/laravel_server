@@ -30,7 +30,7 @@ class ThreadsTableSeeder extends Seeder
             ]);
 
 
-            for ($j = 0; $j < rand(1, 100); $j++) {
+            for ($j = 0; $j < rand(1, 5); $j++) {
 
                 Comment::create([
                     'thread_id' => $thread->id,
