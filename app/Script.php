@@ -3,15 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
+use Redis;
 
 class Script extends Model
 {
     //
-    public function roles()
 
+    public function run($comment)
     {
-        return $this->belongsToMany('App\Thread');
+        $script_id = $this->id;
+        Redis::set('payload', json_encode(array('script'=> $this, 'comment' => $comment)));
+        exec('node run_script.js', $output);
+        Log::debug($output);
     }
+
 
 
 }

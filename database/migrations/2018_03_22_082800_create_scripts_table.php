@@ -16,10 +16,11 @@ class CreateScriptsTable extends Migration
         Schema::create('scripts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('code');
             $table->boolean('active');
             $table->integer('runs_left');
             $table->string('error_message');
-            $table->float('last_run_time');
+            $table->dateTime('last_run_time');
             $table->timestamps();
         });
     }

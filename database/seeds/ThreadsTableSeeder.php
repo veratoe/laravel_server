@@ -13,8 +13,8 @@ class ThreadsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-        Thread::truncate();
+        // moet met delete vanwege foreign key constraint
+        DB::table('threads')->delete();
         Comment::truncate();
 
         $faker = \Faker\Factory::create();

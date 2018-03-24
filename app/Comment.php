@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class Comment extends Model
 {
@@ -12,17 +13,25 @@ class Comment extends Model
     public static function boot()
     {
 
-        self::created(function($comment) {
-            $thread = $comment->thread();
+        self::creating(function($comment) {
+            $thread = $comment->thread;
             $thread->title = "wub";
             $thread->save();
 
+            $scripts = $thread->scripts;
+            foreach($scripts as $script) {
+                $script->run($comment);
+            }
         });
 
     }
 
-    public function author ()
+    public function author()
     {
         return $this->belongsTo('App\Author');
+    }
+    public function thread()
+    {
+        return $this->belongsTo('App\Thread');
     }
 }
