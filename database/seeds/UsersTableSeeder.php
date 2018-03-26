@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Author;
+use App\User;
 
-class AuthorsTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,8 +18,10 @@ class AuthorsTableSeeder extends Seeder
 
         for ($i = 0; $i < 1000; $i++ ) {
 
-            Author::create([
-                'name' => $faker->firstname
+            User::create([
+                'name' => $faker->userName,
+                'email' => $faker->tld . $faker->email,
+                'password' => ""
             ]);
 
         }

@@ -15,7 +15,7 @@ class CommentController extends Controller
     public function index($threadId)
     {
         //
-        return Comment::where('thread_id', $threadId)->with('Author')->get();
+        return Comment::where('thread_id', $threadId)->with('User')->get();
     }
 
     /**
@@ -38,7 +38,7 @@ class CommentController extends Controller
     {
 
         Comment::create([
-            'author_id' => rand(1, 100),
+            'user_id' => rand(1, 100),
             'thread_id' => $threadId,
             'content' => $request['content']
         ]);

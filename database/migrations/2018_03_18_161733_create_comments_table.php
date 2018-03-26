@@ -17,7 +17,8 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->integer('thread_id');
             $table->string('content');
-            $table->integer('author_id');
+            $table->integer('user_id');
+            $table->enum('type', ['user', 'system', 'script']);
             $table->timestamps();
         });
     }

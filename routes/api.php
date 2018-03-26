@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('threads', 'ThreadController');
 Route::resource('threads.comments', 'CommentController');
+Route::resource('threads.scripts', 'ScriptController');

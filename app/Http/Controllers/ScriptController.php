@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Script;
+use App\Thread;
 use Illuminate\Http\Request;
+use Log;
 
 class ScriptController extends Controller
 {
@@ -12,9 +14,10 @@ class ScriptController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($threadId)
     {
         //
+        return Thread::find($threadId)->scripts()->get();
     }
 
     /**
@@ -33,9 +36,16 @@ class ScriptController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $threadId)
     {
         //
+        $script = new Script([
+            'active' => true,
+            'runs_left' => 10,
+        ]);
+
+        $thread = Thread::find($threadId);
+        $thread->scripts()->save($script);
     }
 
     /**
@@ -67,9 +77,11 @@ class ScriptController extends Controller
      * @param  \App\Script  $script
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Script $script)
+    public function update(Request $request, $threadId, $scriptId)
     {
         //
+        $script = Script::find($scriptId);
+        $script->fill($request->all())->save();
     }
 
     /**

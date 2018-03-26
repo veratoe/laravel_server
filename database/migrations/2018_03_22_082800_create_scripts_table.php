@@ -20,7 +20,7 @@ class CreateScriptsTable extends Migration
             $table->boolean('active');
             $table->integer('runs_left');
             $table->string('error_message');
-            $table->dateTime('last_run_time');
+            $table->dateTime('last_run_time')->nullable();
             $table->timestamps();
         });
     }

@@ -34,8 +34,9 @@ class ThreadsTableSeeder extends Seeder
 
                 Comment::create([
                     'thread_id' => $thread->id,
-                    'author_id' => rand(1, 1000),
-                    'content' => $faker->sentence
+                    'user_id' => rand(1, 1000),
+                    'content' => $faker->sentence,
+                    'type' => 'user'
                 ]);
             }
         }

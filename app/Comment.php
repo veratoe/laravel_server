@@ -8,16 +8,13 @@ use Log;
 class Comment extends Model
 {
 
-    protected $fillable = ['content', 'author_id', 'thread_id'];
+    protected $fillable = ['content', 'use_id', 'thread_id', 'type'];
 
     public static function boot()
     {
 
         self::creating(function($comment) {
             $thread = $comment->thread;
-            $thread->title = "wub";
-            $thread->save();
-
             $scripts = $thread->scripts;
             foreach($scripts as $script) {
                 $script->run($comment);
@@ -26,9 +23,9 @@ class Comment extends Model
 
     }
 
-    public function author()
+    public function user()
     {
-        return $this->belongsTo('App\Author');
+        return $this->belongsTo('App\User');
     }
     public function thread()
     {

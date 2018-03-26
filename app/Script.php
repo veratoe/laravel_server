@@ -9,6 +9,14 @@ use Redis;
 class Script extends Model
 {
     //
+    protected $guarded = ['id'];
+
+    protected $attributes = array(
+            'name' => '',
+            'code' => '',
+            'error_message' => '',
+            'last_run_time' => null
+    );
 
     public function run($comment)
     {
