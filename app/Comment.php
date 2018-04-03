@@ -8,7 +8,7 @@ use Log;
 class Comment extends Model
 {
 
-    protected $fillable = ['content', 'use_id', 'thread_id', 'type'];
+    protected $fillable = ['content', 'user_id', 'thread_id', 'type'];
 
     public static function boot()
     {
