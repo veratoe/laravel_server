@@ -1,11 +1,16 @@
 var {VM} = require('vm2');
 var redis = require('redis'),
-    client = redis.createClient();
+    subscriber = redis.createClient(),
+    publisher = redis.createClient();
 
-client.get('payload', (err, data) => { 
-    var payload = JSON.parse(data);
+subscriber.on('message', function (channel, message) {
+    var payload = JSON.parse(message);
     console.log(payload);
     var error;
+
+    // huh?!
+    if (!payload.script) 
+        return;
 
     var vm = new VM({
         sandbox: {
@@ -21,11 +26,12 @@ client.get('payload', (err, data) => {
     }
 
     if (!error) {
-        console.log(vm._context)
+        publisher.publish('node', JSON.stringify(vm._context));
     } else {
+        console.log('Er ging iets fout!');
         console.log(error);
     }
 
 });
 
-client.quit();
+subscriber.subscribe("node");

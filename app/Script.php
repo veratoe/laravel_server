@@ -15,15 +15,16 @@ class Script extends Model
             'name' => '',
             'code' => '',
             'error_message' => '',
-            'last_run_time' => null
+            'last_run_time' => null,
+            'runs_left' => 10
     );
 
     public function run($comment)
     {
-        $script_id = $this->id;
-        Redis::set('payload', json_encode(array('script'=> $this, 'comment' => $comment)));
-        exec('node run_script.js', $output);
-        Log::debug($output);
+        Log::debug($this->runs_left);
+        if ($this->runs_left < 1) return;
+        Redis::publish('node', json_encode(array('script'=> $this, 'comment' => $comment)));
+        $this->decrement('runs_left');
     }
 
 
