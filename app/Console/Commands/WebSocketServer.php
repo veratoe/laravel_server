@@ -3,26 +3,22 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Redis;
 
-use App\Events\NodeMessage;
-use Log;
-
-class RedisSubscribe extends Command
+class WebSocketServer extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'redis:subscribe';
+    protected $signature = 'websocket:init';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Subscribe to Redis channel';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -41,11 +37,11 @@ class RedisSubscribe extends Command
      */
     public function handle()
     {
+        $server = IoServer::factory(
+            new HttpServer( new WsServer( new WebSocketController() )),
+            8090
+        );
 
-        $subscriber = Redis::connection('external');
-        $subscriber->subscribe(['node'], function ($message) {
-            event(new NodeMessage($message));
-        });
-
+        $server->run();
     }
 }

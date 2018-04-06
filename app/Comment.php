@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Log;
+use Illuminate\Support\Facades\Redis;
 
 class Comment extends Model
 {
@@ -19,6 +19,10 @@ class Comment extends Model
             foreach($scripts as $script) {
                 $script->run($comment);
             }
+        });
+
+        self::created(function($comment) {
+            Redis::publish('websocket', $comment);
         });
 
     }
