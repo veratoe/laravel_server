@@ -5,7 +5,6 @@ var redis = require('redis'),
 
 subscriber.on('message', function (channel, message) {
     var payload = JSON.parse(message);
-    console.log(payload);
     var error;
 
     // huh?!

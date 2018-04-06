@@ -22,7 +22,7 @@ class Comment extends Model
         });
 
         self::created(function($comment) {
-            Redis::publish('websocket', $comment);
+            Redis::publish('websocket', json_encode(array('type' => 'CREATE_COMMENT', 'payload' => $comment)));
         });
 
     }
