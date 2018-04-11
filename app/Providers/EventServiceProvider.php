@@ -19,6 +19,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\NodeMessage' => [
             'App\Listeners\OnNodeMessage'
+        ],
+        'App\Events\WebSocketMessage' => [
+            'App\Listeners\OnWebSocketMessage'
         ]
     ];
 

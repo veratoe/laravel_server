@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 
 use App\Events\NodeMessage;
+use App\Events\WebSocketMessage;
 use Log;
 
 class RedisSubscribe extends Command
@@ -41,10 +42,16 @@ class RedisSubscribe extends Command
      */
     public function handle()
     {
+        echo("handle");
 
         $subscriber = Redis::connection('external');
-        $subscriber->subscribe(['node'], function ($message) {
-            event(new NodeMessage($message));
+        $subscriber->psubscribe(['*'], function ($message, $channel) {
+            switch($channel) {
+                case "node": event(new NodeMessage($message)); break;
+                case "websocket-in": event(new WebSocketMessage($message)); break;
+            }
+
+            Log::debug($channel . ' => ' . $message);
         });
 
     }

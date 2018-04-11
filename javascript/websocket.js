@@ -1,5 +1,6 @@
 var WebSocket = require('ws');
 var redis = require('redis'),
+    publisher = redis.createClient();
     subscriber = redis.createClient();
 
 const port = 8090;
@@ -18,12 +19,16 @@ server.broadcast = (data) => {
     });
 }
 
-server.on('connection', (request) => { console.log('Incoming connection') });
+server.on('connection', (connection, request) => {
+    console.log('connection received from ' + request.connection.remoteAddress);
+    connection.on('message', (message) => {
+        publisher.publish('websocket-in', message);
+    });
+
+});
 
 subscriber.on('message', function (channel, message) {
-    console.log('berichtje, gaan we versturen');
-    console.log(message);
     server.broadcast(message);
 });
 
-subscriber.subscribe('websocket');
+subscriber.subscribe('websocket-out');
