@@ -42,8 +42,6 @@ class RedisSubscribe extends Command
      */
     public function handle()
     {
-        echo("handle");
-
         $subscriber = Redis::connection('external');
         $subscriber->psubscribe(['*'], function ($message, $channel) {
             switch($channel) {
@@ -51,7 +49,6 @@ class RedisSubscribe extends Command
                 case "websocket-in": event(new WebSocketMessage($message)); break;
             }
 
-            Log::debug($channel . ' => ' . $message);
         });
 
     }

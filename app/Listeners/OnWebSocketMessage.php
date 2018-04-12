@@ -30,14 +30,25 @@ class OnWebSocketMessage
      */
     public function handle(WebSocketMessage $event)
     {
-        //
-        $m = $event->message;
-        switch($m) {
 
-            case "FETCH_THREADS":
-                Redis::publish('websocket-out', json_encode(array( "type" => "RECEIVE_THREADS", "payload" => Thread::all())));
-                break;
+        $message = $event->message;
 
+        echo $message . "\n";
+
+        if (strpos($message, config('actions.fetchThreads')) !== false) {
+            Redis::publish('websocket-out', json_encode([
+                "type" => config('actions.receiveThreads'), 
+                "payload" => Thread::all()]));
+
+        } else if (strpos($message, config('actions.fetchThreadComments')) !== false) {
+            $threadId = preg_replace('/\D/', '', $message);
+            Redis::publish('websocket-out', json_encode([
+                "type" => config('actions.receiveThreadComments'),
+                "payload" => [
+                    'threadId' => $threadId, 
+                    'comments' => Thread::find($threadId)->comments()->get()
+                ]
+            ]));
         }
     }
 }
